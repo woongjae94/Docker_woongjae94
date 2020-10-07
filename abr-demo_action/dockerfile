@@ -1,0 +1,26 @@
+FROM nvidia/cuda:8.0-cudnn6-devel-ubuntu16.04
+MAINTAINER WoongJae <skydnd0304@gmail.com>
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && \
+	apt-get upgrade -y && \
+	apt-get install -y \
+		build-essential \
+		ca-certificates \
+		gcc \
+		git \
+		libpq-dev \
+		make \
+		python-pip \
+		python2.7 \
+		python2.7-dev && \
+	apt-get autoremove && \
+	apt-get clean
+
+COPY req.txt /home/app/
+WORKDIR /home/app/
+RUN pip install -r req.txt
+
+		 
+	
