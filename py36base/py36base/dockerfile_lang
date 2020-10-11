@@ -1,0 +1,47 @@
+#DOCKER Image 생성 
+FROM nvidia/cuda:9.2-cudnn7-devel-ubuntu18.04
+#도커허브에서 cuda 설치된 우분투 이미지 가져오기 (Base 이미지)
+#FROM 태그는 하나만 사용 가능 ( FROM태그가 N개일 시 N개의 이미지가 생성됨)
+
+MAINTAINER <WoongJae> <skydnd0304@gmail.com>
+#도커 작성자 정보(빌드에 영향 X)
+
+ENV DEBIAN_FRONTEND=noninteractive
+#도커 이미지 빌드 과정 중 사용자입력 건너뛰기
+
+#기본 언어팩 및 파이썬3.7 설치
+RUN apt-get -y update && apt-get install -y build-essential \
+	software-properties-common \
+	language-pack-ko \
+    	fonts-nanum \
+    	fonts-nanum-coding
+RUN apt-get install -y --no-install-recommends python3.6 \
+	python3.6-dev \
+	python3-pip \
+	python3-setuptools \
+	python3-wheel \
+	gcc
+RUN apt-get install -y git
+RUN python3.6 -m pip install pip --upgrade
+RUN pip install --upgrade setuptools
+RUN apt-get install 'ffmpeg'\
+    	'libsm6'\ 
+    	'libxext6'  -y
+RUN apt-get update
+
+#언어 및 지역 설정 ( ko - 한글(언어), KR - 대한민국(지역), UTF-8(코드포맷) )
+RUN locale-gen ko_KR.UTF-8
+ENV LANG ko_KR.UTF-8
+ENV LANGUAGE ko_KR.UTF-8
+ENV LC_ALL ko_KR.UTF-8
+##제일 아래 LC_ALL 만 설정해도 무방
+
+#Requirements 텍스트파일에 기입한 라이브러리들 설치
+COPY ./requirements.txt /home/
+WORKDIR /home/
+RUN pip install -r ./requirements.txt
+WORKDIR /home/
+
+#EXPOSE 5002
+#WORKDIR /home
+#CMD python3 test.py

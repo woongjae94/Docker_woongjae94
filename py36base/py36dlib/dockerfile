@@ -1,0 +1,16 @@
+FROM woongjae94/py36gpu:base
+MAINTAINER <WoongJae> <skydnd0304@gmail.com>
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -y && \
+	apt-get install -y \
+		git \
+		cmake \
+		libsm6 \
+		libxext6 \
+		libxrender-dev && \
+	pip install scikit-build \
+		dlib
+
+WORKDIR /home/

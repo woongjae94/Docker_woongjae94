@@ -1,0 +1,8 @@
+numpy
+opencv-python
+requests
+natsort
+pillow
+stn==1.0.1
+matplotlib
+flask
